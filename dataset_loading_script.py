@@ -56,7 +56,7 @@ _DEV_FILE = "valid.txt"
 _TEST_FILE = "test.txt"
 
 
-class NerConfig(datasets.BuilderConfig):
+class Conll2003Config(datasets.BuilderConfig):
     """BuilderConfig for Conll2003"""
 
     def __init__(self, **kwargs):
@@ -65,15 +65,15 @@ class NerConfig(datasets.BuilderConfig):
         Args:
           **kwargs: keyword arguments forwarded to super.
         """
-        super(NerConfig, self).__init__(**kwargs)
+        super(Conll2003Config, self).__init__(**kwargs)
 
 
-class Ner(datasets.GeneratorBasedBuilder):
-    """Ner dataset."""
+class Conll2003(datasets.GeneratorBasedBuilder):
+    """Conll2003 dataset."""
 
     BUILDER_CONFIGS = [
-        NerConfig(name="ner", version=datasets.Version(
-            "1.0.0"), description="Ner dataset"),
+        Conll2003Config(name="conll2003", version=datasets.Version(
+            "1.0.0"), description="Conll2003 dataset"),
     ]
 
     def _info(self):
@@ -217,19 +217,27 @@ class Ner(datasets.GeneratorBasedBuilder):
                         yield guid, {
                             "id": str(guid),
                             "tokens": tokens,
+                            "pos_tags": pos_tags,
+                            "chunk_tags": chunk_tags,
                             "ner_tags": ner_tags,
                         }
                         guid += 1
                         tokens = []
+                        pos_tags = []
+                        chunk_tags = []
                         ner_tags = []
                 else:
                     # conll2003 tokens are space separated
                     splits = line.split(" ")
                     tokens.append(splits[0])
+                    pos_tags.append(splits[1])
+                    chunk_tags.append(splits[2])
                     ner_tags.append(splits[3].rstrip())
             # last example
             yield guid, {
                 "id": str(guid),
                 "tokens": tokens,
+                "pos_tags": pos_tags,
+                "chunk_tags": chunk_tags,
                 "ner_tags": ner_tags,
             }
