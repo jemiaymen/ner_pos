@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
+# Lint as: python
 """Introduction to the CoNLL-2003 Shared Task: Language-Independent Named Entity Recognition"""
 
 import datasets
@@ -56,7 +56,7 @@ _DEV_FILE = "valid.txt"
 _TEST_FILE = "test.txt"
 
 
-class Conll2003Config(datasets.BuilderConfig):
+class NerConfig(datasets.BuilderConfig):
     """BuilderConfig for Conll2003"""
 
     def __init__(self, **kwargs):
@@ -65,15 +65,15 @@ class Conll2003Config(datasets.BuilderConfig):
         Args:
           **kwargs: keyword arguments forwarded to super.
         """
-        super(Conll2003Config, self).__init__(**kwargs)
+        super(NerConfig, self).__init__(**kwargs)
 
 
-class Conll2003(datasets.GeneratorBasedBuilder):
-    """Conll2003 dataset."""
+class Ner(datasets.GeneratorBasedBuilder):
+    """Ner dataset."""
 
     BUILDER_CONFIGS = [
-        Conll2003Config(name="conll2003", version=datasets.Version(
-            "1.0.0"), description="Conll2003 dataset"),
+        NerConfig(name="ner", version=datasets.Version(
+            "1.0.0"), description="Ner dataset"),
     ]
 
     def _info(self):
@@ -210,8 +210,6 @@ class Conll2003(datasets.GeneratorBasedBuilder):
         with open(filepath, encoding="utf-8") as f:
             guid = 0
             tokens = []
-            pos_tags = []
-            chunk_tags = []
             ner_tags = []
             for line in f:
                 if line.startswith("-DOCSTART-") or line == "" or line == "\n":
@@ -219,27 +217,19 @@ class Conll2003(datasets.GeneratorBasedBuilder):
                         yield guid, {
                             "id": str(guid),
                             "tokens": tokens,
-                            "pos_tags": pos_tags,
-                            "chunk_tags": chunk_tags,
                             "ner_tags": ner_tags,
                         }
                         guid += 1
                         tokens = []
-                        pos_tags = []
-                        chunk_tags = []
                         ner_tags = []
                 else:
                     # conll2003 tokens are space separated
                     splits = line.split(" ")
                     tokens.append(splits[0])
-                    pos_tags.append(splits[1])
-                    chunk_tags.append(splits[2])
-                    ner_tags.append(splits[3].rstrip())
+                    ner_tags.append(splits[1].rstrip())
             # last example
             yield guid, {
                 "id": str(guid),
                 "tokens": tokens,
-                "pos_tags": pos_tags,
-                "chunk_tags": chunk_tags,
                 "ner_tags": ner_tags,
             }

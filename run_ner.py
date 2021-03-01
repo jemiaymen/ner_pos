@@ -411,7 +411,7 @@ def main():
         metrics = train_result.metrics
         trainer.save_model()  # Saves the tokenizer too for easy upload
 
-        logger.log("train", metrics)
+        logger.log(1, metrics)
         # trainer.log_metrics("train", metrics)
         # trainer.save_metrics("train", metrics)
         # trainer.save_state()
@@ -423,7 +423,7 @@ def main():
 
         results = trainer.evaluate()
 
-        logger.log("eval", results)
+        logger.log(2, results)
 
         # trainer.log_metrics("eval", results)
         # trainer.save_metrics("eval", results)
@@ -442,7 +442,7 @@ def main():
             for prediction, label in zip(predictions, labels)
         ]
 
-        logger.log("test", metrics)
+        logger.log(3, metrics)
 
         # trainer.log_metrics("test", metrics)
         # trainer.save_metrics("test", metrics)
