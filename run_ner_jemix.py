@@ -230,8 +230,8 @@ def main():
     features = datasets["train"].features
 
     label_list = features[label_column_name].names
-    # label_to_id = {tag: id for id, tag in enumerate(label_list)}
-    # id_to_label = {id: tag for tag, id in tag2id.items()}
+    label2id = {tag: id for id, tag in enumerate(label_list)}
+    id2label = {id: tag for tag, id in label2id.items()}
     num_labels = len(label_list)
 
     # In the event the labels are not a `Sequence[ClassLabel]`, we will need to go through the dataset to get the
@@ -267,6 +267,9 @@ def main():
         cache_dir=model_args.cache_dir,
         revision=model_args.model_revision,
         use_auth_token=True if model_args.use_auth_token else None,
+        label2id=label2id,
+        id2label=id2label
+
     )
     tokenizer = AutoTokenizer.from_pretrained(
         model_args.tokenizer_name if model_args.tokenizer_name else model_args.model_name_or_path,
