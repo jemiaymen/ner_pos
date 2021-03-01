@@ -17,9 +17,9 @@
 """Introduction to the CoNLL-2003 Shared Task: Language-Independent Named Entity Recognition"""
 
 import datasets
+import logging
 
-
-logger = datasets.logging.get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 
 _CITATION = """\

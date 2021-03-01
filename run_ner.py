@@ -218,8 +218,8 @@ def main():
     if data_args.dataset_name is not None:
         # Downloading and loading a dataset from the hub.
         datasets = load_dataset('dataset_loading_script.py', data_files={
-                                'train': 'data/train.txt', 
-                                'validation': 'data/valid.txt', 
+                                'train': 'data/train.txt',
+                                'validation': 'data/valid.txt',
                                 'test': 'data/test.txt'}
                                 )
     else:
@@ -411,9 +411,10 @@ def main():
         metrics = train_result.metrics
         trainer.save_model()  # Saves the tokenizer too for easy upload
 
-        trainer.log_metrics("train", metrics)
-        trainer.save_metrics("train", metrics)
-        trainer.save_state()
+        logger.log("train", metrics)
+        # trainer.log_metrics("train", metrics)
+        # trainer.save_metrics("train", metrics)
+        # trainer.save_state()
 
     # Evaluation
     results = {}
@@ -422,8 +423,10 @@ def main():
 
         results = trainer.evaluate()
 
-        trainer.log_metrics("eval", results)
-        trainer.save_metrics("eval", results)
+        logger.log("eval", results)
+
+        # trainer.log_metrics("eval", results)
+        # trainer.save_metrics("eval", results)
 
     # Predict
     if training_args.do_predict:
@@ -439,8 +442,10 @@ def main():
             for prediction, label in zip(predictions, labels)
         ]
 
-        trainer.log_metrics("test", metrics)
-        trainer.save_metrics("test", metrics)
+        logger.log("test", metrics)
+
+        # trainer.log_metrics("test", metrics)
+        # trainer.save_metrics("test", metrics)
 
         # Save predictions
         output_test_predictions_file = os.path.join(
