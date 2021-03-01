@@ -304,7 +304,7 @@ def main():
             truncation=True,
         )
 
-        tokenized_inputs["labels"] = examples[label_column_name]
+        tokenized_inputs["labels"] = [[x] for x in examples[label_column_name]]
         return tokenized_inputs
 
     tokenized_datasets = datasets.map(
