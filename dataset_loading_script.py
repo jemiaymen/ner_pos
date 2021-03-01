@@ -226,7 +226,7 @@ class Ner(datasets.GeneratorBasedBuilder):
                     # conll2003 tokens are space separated
                     splits = line.split(" ")
                     tokens.append(splits[0])
-                    ner_tags.append(splits[1].rstrip())
+                    ner_tags.append(splits[3].rstrip())
             # last example
             yield guid, {
                 "id": str(guid),
