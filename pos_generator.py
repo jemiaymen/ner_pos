@@ -72,8 +72,8 @@ class NerPos(datasets.GeneratorBasedBuilder):
             features=datasets.Features(
                 {
                     "id": datasets.Value("string"),
-                    "tokens": datasets.Value("string"),
-                    "pos_tags":
+                    "token": datasets.Value("string"),
+                    "tag":
                         datasets.features.ClassLabel(
                             names=[
                                 'NOUN',  # noun, singular or mass
