@@ -381,10 +381,9 @@ def main():
         metrics = train_result.metrics
         trainer.save_model()  # Saves the tokenizer too for easy upload
 
-        logger.log(1, metrics)
-        # trainer.log_metrics("train", metrics)
-        # trainer.save_metrics("train", metrics)
-        # trainer.save_state()
+        trainer.log_metrics("train", metrics)
+        trainer.save_metrics("train", metrics)
+        trainer.save_state()
 
     # Evaluation
     results = {}
@@ -393,10 +392,8 @@ def main():
 
         results = trainer.evaluate()
 
-        logger.log(2, results)
-
-        # trainer.log_metrics("eval", results)
-        # trainer.save_metrics("eval", results)
+        trainer.log_metrics("eval", results)
+        trainer.save_metrics("eval", results)
 
     # Predict
     if training_args.do_predict:
@@ -412,10 +409,8 @@ def main():
             for prediction, label in zip(predictions, labels)
         ]
 
-        logger.log(3, metrics)
-
-        # trainer.log_metrics("test", metrics)
-        # trainer.save_metrics("test", metrics)
+        trainer.log_metrics("test", metrics)
+        trainer.save_metrics("test", metrics)
 
         # Save predictions
         output_test_predictions_file = os.path.join(
