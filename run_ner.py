@@ -370,17 +370,7 @@ def main():
 
         results = metric.compute(
             predictions=true_predictions, references=true_labels)
-        if data_args.return_entity_level_metrics:
-            # Unpack nested dictionaries
-            final_results = {}
-            for key, value in results.items():
-                if isinstance(value, dict):
-                    for n, v in value.items():
-                        final_results[f"{key}_{n}"] = v
-                else:
-                    final_results[key] = value
-            return final_results
-        else:
+        if not data_args.return_entity_level_metrics:
             return {
                 "precision": results["overall_precision"],
                 "recall": results["overall_recall"],
@@ -388,6 +378,16 @@ def main():
                 "accuracy": results["overall_accuracy"],
             }
 
+        # Unpack nested dictionaries
+        final_results = {}
+        for key, value in results.items():
+            if isinstance(value, dict):
+                for n, v in value.items():
+                    final_results[f"{key}_{n}"] = v
+            else:
+                final_results[key] = value
+        return final_results
+    
     # Initialize our Trainer
     trainer = Trainer(
         model=model,
